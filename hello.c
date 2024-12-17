@@ -20,15 +20,6 @@ int OR(int a, int B) {
     return a + B - a * B;
 }
 
-//Funzione per simulare le porte NOT, AND e OR
-{  int a, int B;
-    NOT(AND(a, OR(a, B))) {
-        //Il valore di ritorno della funzione
-        //TODO aggiungere l'espressione matematica per soddisfare le porte NOT, AND e OR
-        return -(a * (a + B));
-    }
-}
-
 int main() {
     // Dichiara una variabile
     int A, B;
@@ -68,6 +59,10 @@ int main() {
         int orAB = OR(A, B);
         printf("Il valore di uscita della porta OR è: %d\n", orAB);
     }
+
+    // Calcolo dell'espressione: NOT(AND(A, OR(A, B)))
+    int r = -(A * (A + B));
+    printf("Il valore di uscita dell'espressione è: %d\n", r);
 
     printf("\n\n");
 }
