@@ -58,10 +58,6 @@ int main() {
         printf("I valori di A, B, C, D, E e F vengono trasformati da una porta OR\n");
         int orABCDEF = OR(A, B, C, D, E, F);
         printf("Il valore di uscita della porta OR è: %d\n", orABCDEF);
-
-        
-
-
     }
 
     printf("\n\n");
