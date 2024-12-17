@@ -92,9 +92,9 @@ int main() {
         printf("Il valore di uscita dell'espressione è: %d\n", r);
         
 
-        // Calcolo dell'espressione: AND(A, B)OR(C, D)OR(NOT(E)), F
-        int s = (A * B) + (C + D - C * D) + (1 - E) + (E + F - E * F);
-        printf("Il valore di uscita dell'espressione è: %d\n", s);
+        // Calcolo dell'espressione: AND(OR(A, B)OR(C, D)OR(NOT(E)), F
+        int risult = (((A + B - A * B) * (C + D - C * D)) + ((1 - E) + F - (1 - E)* F));
+        printf("Il valore di uscita dell'espressione è: %d\n", risult);
     }
 
     printf("\n\n");
