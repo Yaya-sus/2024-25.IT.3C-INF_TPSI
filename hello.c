@@ -25,7 +25,7 @@ int XOR5(int a, int b, int c, int d, int e) { return XOR(XOR4(a, b, c, d), e); }
 
 
 //alu e registri + collegamento con input
-void ALU(int Cn, int M, int A0, int B0, int A1, int B1, int A2, int B2, int A3, int B3, int S0, int S1, int S2, int S3, int* nm, int* f0, int* f1, int* f2, int* f3, int* ab, int *x, int* cn4, int* y)
+void ALU(int Cn, int M, int A0, int B0, int A1, int B1, int A2, int B2, int A3, int B3, int S0, int S1, int S2, int S3, int* f0, int* f1, int* f2, int* f3, int* ab, int* cn4)
 {
 // Calcolo parte 1
 int z = NOR3(AND(NOT(B0),S1),AND(S0,B0),A0);
@@ -41,15 +41,15 @@ int z6 = NOR3(AND(NOT(B3),S1),AND(S0,B3),A3);
 int z7 = NOR(AND3(A3,NOT(B3),S2),AND3(B3,A3,S3));
 
 // Calcolo parte 2
-*nm = NOT(M);
-*f0 = XOR(NAND(*nm,Cn),XOR(z1,z2));
-*f1 = XOR(NOR(AND(*nm,z),AND3(*nm,Cn,z1)),XOR(z2,z3));
-*f2 = XOR(NOR3(AND(z2,*nm),AND3(*nm,z,z3),AND4(*nm,z3,z1,Cn)),XOR(z4,z5));
-*f3 = XOR(OR4(AND(*nm,z4),AND3(*nm,z2,z5),AND4(*nm,z,z5,z3),AND5(*nm,z5,z3,z1,Cn)),XOR(z6,z7));
+int nm = NOT(M);
+*f0 = XOR(NAND(nm,Cn),XOR(z1,z2));
+*f1 = XOR(NOR(AND(nm,z),AND3(nm,Cn,z1)),XOR(z2,z3));
+*f2 = XOR(NOR3(AND(z2,nm),AND3(nm,z,z3),AND4(nm,z3,z1,Cn)),XOR(z4,z5));
+*f3 = XOR(OR4(AND(nm,z4),AND3(nm,z2,z5),AND4(nm,z,z5,z3),AND5(nm,z5,z3,z1,Cn)),XOR(z6,z7));
 *ab = AND4(*f0,*f1,*f2,*f3);
-*x = NAND4(z1,z3,z5,z7);
+int x = NAND4(z1,z3,z5,z7);
 *cn4 = OR(NOT(NAND5(Cn,z1,z3,z5,z7)),NOT(NOR4(AND4(z,z3,z5,z7),AND3(z2,z5,z7),AND(z4,z7),z6)));
-*y = NOR4(AND4(z,z3,z5,z7),AND3(z2,z5,z7),AND(z4,z7),z6);
+int y = NOR4(AND4(z,z3,z5,z7),AND3(z2,z5,z7),AND(z4,z7),z6);
 
 }
 
@@ -248,11 +248,11 @@ int A, B;
 
 //Dichiarazione variabili
     int lunghezza;
-    int InRegA[4][8]; 
-    int OutRegA[4][8];
+    int IrA[4][8]; 
+    int OutrA[4][8];
 
-    int InRegB[4][8]; 
-    int OutRegB[4][8];
+    int IrB[4][8]; 
+    int OutrB[4][8];
 
 
     lunghezza = strlen(numA);
@@ -279,22 +279,22 @@ int A, B;
 
 //Memorizzazione nel registro A e B
     for (int r = 0; r < 4; r++) { 
-        LETTURA(numA, r * 8, InRegA[r]);
+        LETTURA(numA, r * 8, IrA[r]);
 
 printf("Inizializzazione e Interazione con Registro %d\n", r);
-        REGISTRO(InRegA[r][0], InRegA[r][1], InRegA[r][2], InRegA[r][3],
-                 InRegA[r][4], InRegA[r][5], InRegA[r][6], InRegA[r][7],
-                 &OutRegA[r][0], &OutRegA[r][1], &OutRegA[r][2], &OutRegA[r][3],
-                 &OutRegA[r][4], &OutRegA[r][5], &OutRegA[r][6], &OutRegA[r][7]);
+        REGISTRO(IrA[r][0], IrA[r][1], IrA[r][2], IrA[r][3],
+                 IrA[r][4], IrA[r][5], IrA[r][6], IrA[r][7],
+                 &OutrA[r][0], &OutrA[r][1], &OutrA[r][2], &OutrA[r][3],
+                 &OutrA[r][4], &OutrA[r][5], &OutrA[r][6], &OutrA[r][7]);
 
 
-        LETTURA(numB, r * 8, InRegB[r]);
+        LETTURA(numB, r * 8, IrB[r]);
 
 printf("Inizializzazione e Interazione con Registro %d\n", r);
-        REGISTRO(InRegB[r][0], InRegB[r][1], InRegB[r][2], InRegB[r][3],
-                 InRegB[r][4], InRegB[r][5], InRegB[r][6], InRegB[r][7],
-                 &OutRegB[r][0], &OutRegB[r][1], &OutRegB[r][2], &OutRegB[r][3],
-                 &OutRegB[r][4], &OutRegB[r][5], &OutRegB[r][6], &OutRegB[r][7]);
+        REGISTRO(IrB[r][0], IrB[r][1], IrB[r][2], IrB[r][3],
+                 IrB[r][4], IrB[r][5], IrB[r][6], IrB[r][7],
+                 &OutrB[r][0], &OutrB[r][1], &OutrB[r][2], &OutrB[r][3],
+                 &OutrB[r][4], &OutrB[r][5], &OutrB[r][6], &OutrB[r][7]);
 
     }
 
@@ -304,7 +304,7 @@ printf("Inizializzazione e Interazione con Registro %d\n", r);
     for (int r = 0; r < 4; r++){
         printf("Registro %d: ", r);
         for (int b = 0; b < 8; b++) {
-            printf("%d", OutRegA[r][b]);
+            printf("%d", OutrA[r][b]);
         }
         printf("\n");
     }
@@ -313,22 +313,74 @@ printf("Inizializzazione e Interazione con Registro %d\n", r);
     for (int r = 0; r < 4; r++){
         printf("Registro %d: ", r);
         for (int b = 0; b < 8; b++) {
-            printf("%d", OutRegB[r][b]);
+            printf("%d", OutrB[r][b]);
         }
         printf("\n");
     }
 
 
-    //sezione calcolo
+//Calcolo
+int F[4][8];
+int Cn4[8];
+int S0, S1, S2, S3, M, Cn;
+int ab;
 
-ALU();
-ALU();
-ALU();
-ALU();
-ALU();
-ALU();
-ALU();
-ALU();
+//Richiesta inserimento di valori di riferimento
+printf("Inserisci il valore di S0 (0 o 1):\n");
+scanf("%d", &S0);
+printf("Inserisci il valore di S1 (0 o 1):\n");
+scanf("%d", &S1);
+printf("Inserisci il valore di S2 (0 o 1):\n");
+scanf("%d", &S2);
+printf("Inserisci il valore di S3 (0 o 1):\n");
+scanf("%d", &S3);
+printf("Inserisci il valore di M (0 o 1):\n");
+scanf("%d", &M);
+printf("Inserisci il valore di Cn (0 o 1):\n");
+scanf("%d", &Cn);
+
+ALU(Cn,     M, OutrA[1][0], OutrB[1][0], OutrA[2][0], OutrB[2][0], OutrA[3][0], OutrB[3][0], OutrA[4][0], OutrB[4][0], S0, S1, S2, S3, &F[1][0], &F[2][0], &F[3][0], &F[4][0], &ab, &Cn4[0]);
+ALU(Cn4[0], M, OutrA[1][1], OutrB[1][1], OutrA[2][1], OutrB[2][1], OutrA[3][1], OutrB[3][1], OutrA[4][1], OutrB[4][1], S0, S1, S2, S3, &F[1][1], &F[2][1], &F[3][1], &F[4][1], &ab, &Cn4[1]);
+
+ALU(Cn4[1], M, OutrA[1][2], OutrB[1][2], OutrA[2][2], OutrB[2][2], OutrA[3][2], OutrB[3][2], OutrA[4][2], OutrB[4][2], S0, S1, S2, S3, &F[1][2], &F[2][2], &F[3][2], &F[4][2], &ab, &Cn4[2]);
+ALU(Cn4[2], M, OutrA[1][3], OutrB[1][3], OutrA[2][3], OutrB[2][3], OutrA[3][3], OutrB[3][3], OutrA[4][3], OutrB[4][3], S0, S1, S2, S3, &F[1][3], &F[2][3], &F[3][3], &F[4][3], &ab, &Cn4[3]);
+
+ALU(Cn4[3], M, OutrA[1][4], OutrB[1][4], OutrA[2][4], OutrB[2][4], OutrA[3][4], OutrB[3][4], OutrA[4][4], OutrB[4][4], S0, S1, S2, S3, &F[1][4], &F[2][4], &F[3][4], &F[4][4], &ab, &Cn4[4]);
+ALU(Cn4[4], M, OutrA[1][5], OutrB[1][5], OutrA[2][5], OutrB[2][5], OutrA[3][5], OutrB[3][5], OutrA[4][5], OutrB[4][5], S0, S1, S2, S3, &F[1][5], &F[2][5], &F[3][5], &F[4][5], &ab, &Cn4[5]);
+
+ALU(Cn4[5], M, OutrA[1][6], OutrB[1][6], OutrA[2][6], OutrB[2][6], OutrA[3][6], OutrB[3][6], OutrA[4][6], OutrB[4][6], S0, S1, S2, S3, &F[1][6], &F[2][6], &F[3][6], &F[4][6], &ab, &Cn4[6]);
+ALU(Cn4[6], M, OutrA[1][7], OutrB[1][7], OutrA[2][7], OutrB[2][7], OutrA[3][7], OutrB[3][7], OutrA[4][7], OutrB[4][7], S0, S1, S2, S3, &F[1][7], &F[2][7], &F[3][7], &F[4][7], &ab, &Cn4[7]);
+
+int Out[4][8];
+
+for (int r = 0; r < 8;) { 
+        
+printf("Inizializzazione e Interazione con Registro %d\n", r);
+        REGISTRO(IrA[1][r], IrA[2][r], IrA[3][r], IrA[4][r],
+                 IrA[1][r+1], IrA[2][r+1], IrA[3][r+1], IrA[4][r+1],
+                 &Out[1][r], &Out[2][r], &Out[3][r], &Out[4][r],
+                 &Out[1][r+1], &Out[2][r+1], &Out[3][r+1], &Out[4][r+1]);
+      r+=2;           
+
+}
+
+    char Vbitfin[32 + 1];
+    int p = 1;
+
+        for (int i = 0; i < 8;){
+            
+            Vbitfin[p] = Out[1][i]*10;
+            p++;
+            Vbitfin[p] = Out[2][i]*10;
+            p++; 
+            Vbitfin[p] = Out[3][i]*10;
+            p++;  
+            Vbitfin[p] = Out[4][i]*10;
+            p++;
+        }
+    
+    printf("");
+    
 
 
 
